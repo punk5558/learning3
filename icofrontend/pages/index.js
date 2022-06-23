@@ -45,19 +45,27 @@ const getTokensToBeClaimed = async () => {
       provider,
     );
 
+    const tokenContract = new Contract(
+      TOKEN_CONTRACT_ADDRESS,
+      TOKEN_CONTRACT_ABI,
+      provider,
+    );
+
     const signer = await getProviderOrSigner(true);
     const address = await signer.getAddress();
     const balance = await nftContract.balanceOf(address);
-
+    //console.log(nftContract.address);
+    //console.log(address);
     if(balance === zero){
       setTokensToBeClaimed(zero);
     } else {
       var amount = 0;
       for(var i=0; i<balance; i++) {
         const tokenId = await nftContract.tokenOfOwnerByIndex(address, i);
+        //console.log(parseInt(tokenId));
         const claimed = await tokenContract.tokenIdsClaimed(tokenId);
         if(!claimed){
-          amount ++;
+          amount++;
         }
       }
 
@@ -140,17 +148,20 @@ const claimCryptoDevTokens = async () => {
 
 const getTotalTokensMinted = async () => {
   try {
-    const provider = getProviderOrSigner();
-    const tokenContract = new Contract (
+    const provider = await getProviderOrSigner();
+
+    const tokenContract = new Contract(
       TOKEN_CONTRACT_ADDRESS,
       TOKEN_CONTRACT_ABI,
-      provider,
+      provider
     );
 
     const _tokensMinted = await tokenContract.totalSupply();
+
     setTokensMinted(_tokensMinted);
   } catch(err) {
-    console.error(err);
+    console.log("error message");
+    console.error(err.message);
   }
 };
 
