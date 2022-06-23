@@ -167,7 +167,7 @@ const getTotalTokensMinted = async () => {
 
 const getOwner = async () => {
   try {
-    const provider = getProviderOrSigner();
+    const provider = await getProviderOrSigner();
     const tokenContract = new Contract (
       TOKEN_CONTRACT_ADDRESS,
       TOKEN_CONTRACT_ABI,
