@@ -41,7 +41,7 @@ contract CryptoDevToken is ERC20, Ownable {
     uint256 amountWithDecimals = amount * 10**18;
     require(
       (totalSupply() + amountWithDecimals) <= maxTotalSupply,
-      "Exceeds the max total supply available")
+      "Exceeds the max total supply available"
       );
 
       // call the internal function from openzeppelin's ERC20 contract
@@ -79,7 +79,7 @@ contract CryptoDevToken is ERC20, Ownable {
   function withdraw() public onlyOwner {
     address _owner = owner();
     uint256 amount = address(this).balance;
-    (bool sent, ) = _owner.call(value:amount)("");
+    (bool sent, ) = _owner.call{value: amount}("");
     require(sent, "Failed to send Ether");
   }
 
